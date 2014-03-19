@@ -3,6 +3,11 @@
 
   var fs = require('fs');
 
+  // Get the filename
+  var filename = 'examples/example.js';
+  // Get the encoding
+  var encoding = 'utf8';
+
   // Iterators RegExps
   var iterators = {
     for: function () {
@@ -12,7 +17,15 @@
 
   var getBody = function (data) {
     return data.match(/for \(.*\)\n.*/);
-  }
+  };
+
+  var createAlternativeFile = function (res, operation) {
+    var a = filename.split('.');
+    var nfn = a[0] + '_' + operation + '.' + a[a.length - 1];
+    fs.writeFile(nfn, res, function (callback) {
+      console.log('Created!');
+    });
+  };
 
   var getIteratorBody = function (data, regExp) {
     var response = data.match(/for \((.*)\)\n(.*)/)[2];
@@ -35,12 +48,6 @@
     }
   }
 
-  // Get the filename
-  var filename = 'example.js';
-
-  // Get the encoding
-  var encoding = 'utf8';
-
   // Check if file exists
   if (fs.existsSync(filename)) {
 
@@ -60,9 +67,10 @@
             for (var replacer in replacers) {
               if (replacer !== iterator){
                 var alternative = replacers[replacer](dataMatch[1], body);
-                // console.log(alternative);
                 var res = data.replace(getBody(data), alternative);
-                console.log(res);
+
+                // Create new file
+                createAlternativeFile(res, replacer);
               }
             }
           }
