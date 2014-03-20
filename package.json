@@ -1,0 +1,18 @@
+{
+  "name": "optimizr.js",
+  "version": "0.0.0",
+  "description": "Search for script optimizations. This tool will help you find the faster iterator for your alogoritms in order to make them faster",
+  "main": "lib/optimizr.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "optimizer",
+    "optimization"
+  ],
+  "author": "Rodrigo Espinosa",
+  "license": "BSD-2-Clause"
+}
