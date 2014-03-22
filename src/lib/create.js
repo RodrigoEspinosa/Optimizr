@@ -47,9 +47,27 @@ var assignmentExpression = function (operator, left, right) {
     'right': right
   };
 };
+var variableDeclaration = function (variableDeclarator, kind) {
+  variableDeclarator = [variableDeclarator];
+  return {
+    type: 'VariableDeclaration',
+    declarations: variableDeclarator,
+    kind: kink || 'var'
+  };
+};
+
+var variableDeclarator = function (id, initExpression) {
+  return {
+    type: 'VariableDeclarator',
+    id: id,
+    init: initExpression || null
+  };
+};
 
 module.exports.blockStatement = blockStatement;
 module.exports.whileStatement = whileStatement;
 module.exports.binaryExpression = binaryExpression;
 module.exports.expressionStatement = expressionStatement;
 module.exports.assignmentExpression = assignmentExpression;
+module.exports.variableDeclaration = variableDeclaration;
+module.exports.variableDeclarator = variableDeclarator;
