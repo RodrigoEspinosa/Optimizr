@@ -11,7 +11,8 @@ var fs = require('fs'),
     esprima = require('esprima'),
     escodegen = require('escodegen'),
     create = require('./src/lib/create'),
-    convert = require('./src/lib/convert');
+    convert = require('./src/lib/convert'),
+    callback = require('./src/lib/node_callback');
 
 // Get the filename
 var filename = process.argv[2] || 'examples/example.js';
@@ -37,21 +38,18 @@ var readNode = function (treeNode, callback) {
 if (fs.existsSync(filename)) {
   // Read the file
   fs.readFile(filename, {encoding: encoding}, function (err, data) {
+    // Create the abstract syntax tree for the input file
     var ast = esprima.parse(data, {
       loc: true,
       range: true,
       tokens: false,
       tolerant: true
     });
+    // Read an loop from the root node
     readNode(ast['body'], function (node) {
-      if (typeof node === 'object') {
-        if (node.type === 'ForStatement') {
-          var newWhile = convert.forToWhile(node);
-          var output = escodegen.generate(newWhile);
-
-          console.log(output);
-        }
-      }
+      // Check if the node is an object and has a callback
+      if (typeof node === 'object' && node.type in callback)
+        callback[node.type](node);
     });
   });
 } else {
