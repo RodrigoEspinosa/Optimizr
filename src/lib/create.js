@@ -47,12 +47,13 @@ var assignmentExpression = function (operator, left, right) {
     'right': right
   };
 };
+
 var variableDeclaration = function (variableDeclarator, kind) {
   variableDeclarator = [variableDeclarator];
   return {
     type: 'VariableDeclaration',
     declarations: variableDeclarator,
-    kind: kink || 'var'
+    kind: kind || 'var'
   };
 };
 

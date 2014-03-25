@@ -34,6 +34,28 @@ var readNode = function (treeNode, callback) {
   }
 };
 
+var isChildren = function (ast, node) {
+  for (var i in ast) {
+    if (ast[i] == node)
+      return true;
+  }
+  return false;
+};
+
+var findParent = function (ast, node) {
+  if (isChildren) {
+    return ast;
+  } else {
+    for (var i in ast) {
+      if (isChildren(ast[i], node)) {
+        return ast[i];
+      } else {
+        return findParent(ast[i], node);
+      }
+    }
+  }
+};
+
 // Check if file exists
 if (fs.existsSync(filename)) {
   // Read the file
@@ -48,8 +70,17 @@ if (fs.existsSync(filename)) {
     // Read an loop from the root node
     readNode(ast['body'], function (node) {
       // Check if the node is an object and has a callback
-      if (typeof node === 'object' && node.type in callback)
-        callback[node.type](node);
+      if (typeof node === 'object' && node.type in callback) {
+        var newNodes = callback[node.type](node);
+        // console.log(escodegen.generate(newNodes));
+
+        var parent = findParent(ast, node);
+        console.log(node);
+        console.log(parent);
+
+        var outputScript = escodegen.generate(ast);
+        // console.log(outputScript);
+      }
     });
   });
 } else {

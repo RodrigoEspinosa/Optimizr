@@ -24,8 +24,11 @@ var updateToExpression = function (update) {
 };
 
 var forToWhile = function (forStatement) {
-  var update = (forStatement.update.type === 'UpdateExpression') ? updateToExpression(forStatement.update) : forStatement.update;
-  return create.whileStatement(forStatement.test, update, forStatement.body);
+  var update = (forStatement.update.type === 'UpdateExpression') ?
+                updateToExpression(forStatement.update) : forStatement.update;
+  var whileStatement = create.whileStatement(forStatement.test, update, forStatement.body);
+
+  return [forStatement.init, whileStatement];
 };
 
 module.exports.updateToExpression = updateToExpression;

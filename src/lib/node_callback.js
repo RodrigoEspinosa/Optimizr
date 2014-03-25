@@ -13,10 +13,8 @@ var escodegen = require('escodegen'),
 
 var callback = {
   ForStatement: function (node) {
-    var newWhile = convert.forToWhile(node);
-    var output = escodegen.generate(newWhile);
-
-    console.log(output);
+    // Convert a 'for' node to 'while' node
+    return convert.forToWhile(node);
   }
 };
 
